@@ -10,6 +10,7 @@ specifiers:
   postcss: ^8.4.21
   react: ^18.2.0
   react-dom: ^18.2.0
+  sonner: ^0.3.0
   standard: ^17.0.0
   tailwindcss: ^3.3.1
   vite: ^4.2.0
@@ -19,6 +20,7 @@ dependencies:
   '@tremor/react': 2.1.0_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  sonner: 0.3.0_biqbaboplfbrettd7655fr4n2y
 
 devDependencies:
   '@types/react': 18.0.33
@@ -2464,6 +2466,16 @@ packages:
       get-intrinsic: 1.2.0
       object-inspect: 1.12.3
     dev: true
+
+  /sonner/0.3.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-PJ/3k97N+/Kt/uu5tnPp3HFpFGF/iQs+hq+lAEtEQcEMc7o9S4axOV8pd7RKpFJoKt199aMUqHIgzs2re4MPbw==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
 
   /source-map-js/1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}

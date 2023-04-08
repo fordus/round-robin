@@ -1,6 +1,6 @@
 import { Card, List, ListItem, Title } from '@tremor/react'
 
-export default ({ data, listaDeRafagas = [] }) => {
+export default ({ data, listaDeRafagas = [], currentStats }) => {
   const tiempoServicio = data?.reduce((acc, curr) => acc + (curr.tiempoFinalizacion - curr.ordenLlegada), 0) / data?.length
   let tiempoEspera = 0
   let mediaIndiceServicio = 0
@@ -31,8 +31,11 @@ export default ({ data, listaDeRafagas = [] }) => {
   return (
     <Card className='max-w-xs'>
       <Title>Resultados</Title>
-
       <List>
+        <ListItem>
+          <span>Instante actual</span>
+          <span>{currentStats?.instante}</span>
+        </ListItem>
         <ListItem>
           <span>Media tiempo de servicio</span>
           <span>{tiempoServicio}</span>

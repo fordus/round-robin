@@ -17,7 +17,8 @@ function App () {
     resetProgram,
     isStarted,
     setQuantum,
-    listaDeRafagas
+    listaDeRafagas,
+    currentStats
   } = useApp({ toast })
 
   return (
@@ -34,7 +35,7 @@ function App () {
           <Table apps={currentData} isStarted={isStarted} />
         </div>
         {isStarted && <BarList apps={currentData} />}
-        {isStarted && <CardList data={currentData} listaDeRafagas={listaDeRafagas.current} />}
+        {isStarted && <CardList data={currentData} listaDeRafagas={listaDeRafagas.current} currentStats={currentStats} />}
       </div>
     </main>
   )
