@@ -1,42 +1,51 @@
 import { Card, List, ListItem, Title } from '@tremor/react'
 
-const cities = [
-  {
-    city: 'Athens',
-    rating: '2 open PR'
-  },
-  {
-    city: 'Luzern',
-    rating: '1 open PR'
-  },
-  {
-    city: 'Zürich',
-    rating: '0 open PR'
-  },
-  {
-    city: 'Vienna',
-    rating: '1 open PR'
-  },
-  {
-    city: 'Ermatingen',
-    rating: '0 open PR'
-  },
-  {
-    city: 'Lisbon',
-    rating: '0 open PR'
-  }
-]
+export default ({ data, listaDeRafagas = [] }) => {
+  const tiempoServicio = data?.reduce((acc, curr) => acc + (curr.tiempoFinalizacion - curr.ordenLlegada), 0) / data?.length
+  let tiempoEspera = 0
+  let mediaIndiceServicio = 0
 
-export default () => (
-  <Card className='max-w-full'>
-    <Title>Tremor's Hometowns</Title>
-    <List>
-      {cities.map((item) => (
-        <ListItem key={item.city}>
-          <span>{item.city}</span>
-          <span>{item.rating}</span>
+  if (listaDeRafagas.length > 0) {
+    let contador = 0
+    const arrayConTiempoEspera = data?.map((item) => {
+      const rafaga = item.tiempoFinalizacion - item.ordenLlegada - listaDeRafagas[contador]
+      contador++
+      return rafaga
+    })
+
+    tiempoEspera = arrayConTiempoEspera?.reduce((acc, curr) => acc + curr, 0) / arrayConTiempoEspera?.length
+  }
+
+  if (listaDeRafagas.length > 0) {
+    let contador = 0
+    const arrayIndiceServicio = data?.map((item) => {
+      const indiceServicio = listaDeRafagas[contador] / (item.tiempoFinalizacion - item.ordenLlegada)
+      contador++
+      return indiceServicio
+    })
+
+    mediaIndiceServicio = arrayIndiceServicio?.reduce((acc, curr) => acc + curr, 0) / arrayIndiceServicio?.length
+    mediaIndiceServicio = Math.round(mediaIndiceServicio * 100) / 100
+  }
+
+  return (
+    <Card className='max-w-xs'>
+      <Title>Resultados</Title>
+
+      <List>
+        <ListItem>
+          <span>Media tiempo de servicio</span>
+          <span>{tiempoServicio}</span>
         </ListItem>
-      ))}
-    </List>
-  </Card>
-)
+        <ListItem>
+          <span>Media tiempo de espera</span>
+          <span>{tiempoEspera}</span>
+        </ListItem>
+        <ListItem>
+          <span>Media índice de servicio</span>
+          <span>{mediaIndiceServicio}</span>
+        </ListItem>
+      </List>
+    </Card>
+  )
+}
