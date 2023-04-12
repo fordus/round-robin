@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useRoundRobin } from './UseRoundRobin'
+import { useRoundRobin } from './useRoundRobin'
 
 const procesos = [
   {
