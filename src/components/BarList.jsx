@@ -1,7 +1,7 @@
 import { BarList, Card, Title, Bold, Flex, Text } from '@tremor/react'
 
-export default ({ apps = [] }) => {
-  const data = apps?.map((item) => {
+export default ({ listaTerminados }) => {
+  const data = listaTerminados?.map((item) => {
     return {
       key: item.id,
       name: item.nombre,

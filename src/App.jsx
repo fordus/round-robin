@@ -1,5 +1,5 @@
 
-import BarList from './components/BarList'
+// import BarList from './components/BarList'
 import CardList from './components/CardList'
 import Form from './components/Form'
 import StartButton from './components/StartButton'
@@ -8,17 +8,24 @@ import useApp from './hooks/useApp'
 import { Toaster, toast } from 'sonner'
 import Table from './components/Table'
 import Header from './components/Header'
+import Donut from './components/Donut'
+import Card from './components/Card'
+import EntryTable from './components/EntryTable'
+import FinalTable from './components/FinalTable'
 
 function App () {
   const {
-    currentData,
+    isStarted,
     addData,
     startProgram,
     resetProgram,
-    isStarted,
+    listaProcesos,
+    listaCola,
+    listaTerminados,
+    tiempo,
     setQuantum,
-    listaDeRafagas,
-    currentStats
+    procesoActual,
+    preProcesos
   } = useApp({ toast })
 
   return (
@@ -32,10 +39,24 @@ function App () {
         </Header>
         <div className='flex flex-col gap-4 sm:flex-row '>
           {!isStarted && <Form addData={addData} toast={toast} />}
-          <Table apps={currentData} isStarted={isStarted} />
+          <EntryTable apps={listaProcesos} preProcesos={preProcesos} />
         </div>
-        {isStarted && <BarList apps={currentData} />}
-        {isStarted && <CardList data={currentData} listaDeRafagas={listaDeRafagas.current} currentStats={currentStats} />}
+
+        <div className='flex flex-col gap-4 sm:flex-row '>
+          <Table apps={listaCola} isStarted={isStarted} />
+          <Donut listaCola={listaCola} />
+        </div>
+        <FinalTable apps={listaTerminados} />
+        <div className='flex flex-col gap-4 sm:flex-row '>
+          <CardList
+            listaTerminados={listaTerminados}
+            tiempo={tiempo}
+          />
+
+          <Card procesoActual={procesoActual} />
+        </div>
+
+        {/* <BarList listaTerminados={listaTerminados} /> */}
       </div>
     </main>
   )

@@ -1,6 +1,4 @@
-import { ClockIcon } from '@heroicons/react/outline'
 import {
-  Badge,
   BadgeDelta,
   Card,
   Table,
@@ -13,16 +11,20 @@ import {
   Title
 } from '@tremor/react'
 
-export default ({ apps, isStarted }) => {
+export default ({ apps }) => {
   return (
     <Card>
-      <Title>Lista de procesos en cola</Title>
+      <Title>Lista de procesos terminados</Title>
       <Table className='mt-5'>
         <TableHead>
           <TableRow>
             <TableHeaderCell>Nombre</TableHeaderCell>
             <TableHeaderCell>Tiempo Llegada</TableHeaderCell>
             <TableHeaderCell>Ráfaga CPU</TableHeaderCell>
+            <TableHeaderCell>Tiempo espera</TableHeaderCell>
+            <TableHeaderCell>Tiempo servicio</TableHeaderCell>
+            <TableHeaderCell>Tiempo final</TableHeaderCell>
+            <TableHeaderCell>Indice</TableHeaderCell>
             <TableHeaderCell>Estado</TableHeaderCell>
           </TableRow>
         </TableHead>
@@ -34,12 +36,22 @@ export default ({ apps, isStarted }) => {
                 <Text>{item.tiempoLlegada}</Text>
               </TableCell>
               <TableCell>
-                <Text>{item.rafagaCPU <= 0 ? 0 : item.rafagaCPU}</Text>
+                <Text>{item.rafagaCPU}</Text>
               </TableCell>
               <TableCell>
-                {item.rafagaCPU <= 0 && <BadgeDelta deltaType='decrease'>Terminado</BadgeDelta>}
-                {item.rafagaCPU > 0 && isStarted && <Badge icon={ClockIcon}>En proceso</Badge>}
-                {item.rafagaCPU > 0 && !isStarted && <BadgeDelta deltaType='unchanged'>Preparado</BadgeDelta>}
+                <Text>{item.tiempoEspera}</Text>
+              </TableCell>
+              <TableCell>
+                <Text>{item.tiempoServicio}</Text>
+              </TableCell>
+              <TableCell>
+                <Text>{item.tiempoFinalizacion}</Text>
+              </TableCell>
+              <TableCell>
+                <Text>{Math.round(item.indice * 100) / 100}</Text>
+              </TableCell>
+              <TableCell>
+                <BadgeDelta deltaType='decrease'>Terminado</BadgeDelta>
               </TableCell>
             </TableRow>
           ))}

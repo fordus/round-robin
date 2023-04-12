@@ -1,6 +1,4 @@
-import { ClockIcon } from '@heroicons/react/outline'
 import {
-  Badge,
   BadgeDelta,
   Card,
   Table,
@@ -13,10 +11,10 @@ import {
   Title
 } from '@tremor/react'
 
-export default ({ apps, isStarted }) => {
+export default ({ apps, preProcesos }) => {
   return (
     <Card>
-      <Title>Lista de procesos en cola</Title>
+      <Title>Lista de procesos</Title>
       <Table className='mt-5'>
         <TableHead>
           <TableRow>
@@ -27,25 +25,23 @@ export default ({ apps, isStarted }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {apps.map((item) => (
+          {preProcesos.map((item) => (
             <TableRow key={item.id}>
               <TableCell>{item.nombre}</TableCell>
               <TableCell>
                 <Text>{item.tiempoLlegada}</Text>
               </TableCell>
               <TableCell>
-                <Text>{item.rafagaCPU <= 0 ? 0 : item.rafagaCPU}</Text>
+                <Text>{item.rafagaCPU}</Text>
               </TableCell>
               <TableCell>
-                {item.rafagaCPU <= 0 && <BadgeDelta deltaType='decrease'>Terminado</BadgeDelta>}
-                {item.rafagaCPU > 0 && isStarted && <Badge icon={ClockIcon}>En proceso</Badge>}
-                {item.rafagaCPU > 0 && !isStarted && <BadgeDelta deltaType='unchanged'>Preparado</BadgeDelta>}
+                <BadgeDelta deltaType='unchanged'>Preparado</BadgeDelta>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      {apps.length === 0 && <div className='py-10 text-center text-gray-700 '>No hay procesos en cola</div>}
+      {preProcesos.length === 0 && <div className='py-10 text-center text-gray-700 '>No hay procesos en cola</div>}
     </Card>
   )
 }
