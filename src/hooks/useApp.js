@@ -36,12 +36,14 @@ const procesos = [
 
 export default function useApp ({ toast }) {
   const [isStarted, setIsStarted] = useState(false)
-  const [listaProcesos, setListaProcesos] = useState(procesos)
+  const [listaProcesos, setListaProcesos] = useState([])
   const [quantumActual, setQuantumActual] = useState(2)
 
-  const addData = ({ nombre, ordenLlegada, rafagaCPU }) => {
+  const addData = ({ nombre, tiempoLlegada, rafagaCPU }) => {
     const id = window.crypto.getRandomValues(new Uint32Array(1))[0]
-    const nuevaListaProcesos = [...listaProcesos, { id, nombre, ordenLlegada, rafagaCPU }]
+    const newTiempoLlegada = parseInt(tiempoLlegada)
+    const newRafagaCPU = parseInt(rafagaCPU)
+    const nuevaListaProcesos = [...listaProcesos, { id, nombre, tiempoLlegada: newTiempoLlegada, rafagaCPU: newRafagaCPU }]
     setListaProcesos(nuevaListaProcesos)
   }
 
@@ -65,6 +67,10 @@ export default function useApp ({ toast }) {
     window.location.reload()
   }
 
+  const setExampleData = () => {
+    setListaProcesos(procesos)
+  }
+
   const setQuantum = (quantum) => {
     const newQuantum = parseInt(quantum)
     if (newQuantum < 1) {
@@ -76,13 +82,13 @@ export default function useApp ({ toast }) {
 
   const {
     procesosCola,
-    // listadoProcesos,
     enProceso,
     promedioTiempoServicio,
     promedioTiempoEspera,
     promedioIndice,
     tiempo,
-    listaTerminados
+    listaTerminados,
+    listaProcesosInicial
   } = useRoundRobin({ listaProcesos, isStarted })
 
   return {
@@ -100,6 +106,8 @@ export default function useApp ({ toast }) {
     tiempo,
     quantumActual,
     setQuantum,
-    procesoActual: enProceso
+    procesoActual: enProceso,
+    listaProcesosInicial,
+    setExampleData
   }
 }

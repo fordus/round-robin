@@ -11,7 +11,7 @@ import {
   Title
 } from '@tremor/react'
 
-export default ({ apps }) => {
+export default ({ preProcesos }) => {
   return (
     <Card>
       <Title>Lista de procesos</Title>
@@ -25,7 +25,7 @@ export default ({ apps }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {apps.map((item) => (
+          {preProcesos.map((item) => (
             <TableRow key={item.id}>
               <TableCell>{item.nombre}</TableCell>
               <TableCell>
@@ -41,7 +41,7 @@ export default ({ apps }) => {
           ))}
         </TableBody>
       </Table>
-      {apps.length === 0 && <div className='py-10 text-center text-gray-700 '>No hay procesos en cola</div>}
+      {preProcesos.length === 0 && <div className='py-10 text-center text-gray-700 '>No hay procesos en cola</div>}
     </Card>
   )
 }

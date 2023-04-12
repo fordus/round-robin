@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react'
 
 const quantum = 2
 
-export function useRoundRobin ({ listaProcesos: listaProcesosInicio, setListaProcesos, isStarted }) {
+export function useRoundRobin ({ listaProcesos: listaProcesosInicio, isStarted }) {
   const [procesosTerminados, setProcesosTerminados] = useState([])
   const [procesosCola, setProcesosCola] = useState([])
   const [enProceso, setEnProceso] = useState(null)
   const [tiempoActual, setTiempoActual] = useState(0)
+  const [listaProcesosInicial, setListaProcesosInicial] = useState([])
 
   const listaProcesos = listaProcesosInicio.map(proceso => ({ ...proceso, rafagaCPUInicio: proceso.rafagaCPU }))
   let tiempo = 0
@@ -33,11 +34,13 @@ export function useRoundRobin ({ listaProcesos: listaProcesosInicio, setListaPro
         setProcesosCola(cola)
         setEnProceso(procesoActual)
         setTiempoActual(tiempo)
+        setListaProcesosInicial(listaProcesos)
 
         if (procesoActual !== null && procesoActual.rafagaCPU !== 0 && contador <= quantum) {
           procesoActual.rafagaCPU--
           if (procesoActual.rafagaCPU === 0) {
             completado.push({
+              id: procesoActual.id,
               nombre: procesoActual.nombre,
               rafagaCPU: procesoActual.rafagaCPUInicio,
               tiempoLlegada: procesoActual.tiempoLlegada,
@@ -65,7 +68,6 @@ export function useRoundRobin ({ listaProcesos: listaProcesosInicio, setListaPro
           }
         }
 
-        // log({ tiempo, completado, procesoActual, cola, listaProcesos })
         tiempo++
 
         if ((listaProcesos.length === 0) && (cola.length === 0) && (procesoActual === null)) {
@@ -79,14 +81,7 @@ export function useRoundRobin ({ listaProcesos: listaProcesosInicio, setListaPro
     listaTerminados: procesosTerminados,
     procesosCola,
     enProceso,
-    tiempo: tiempoActual
+    tiempo: tiempoActual,
+    listaProcesosInicial
   }
 }
-
-// function log ({ tiempo, completado, procesoActual, cola, listaProcesos }) {
-//   console.log(`------------------ ${tiempo} ------------------`)
-//   console.log(completado.map(proceso => proceso.nombre), 'COMPLETADO')
-//   console.log([procesoActual?.nombre], 'PROCESO ACTUAL')
-//   console.log(cola.map(proceso => proceso.nombre), listaProcesos.map(proceso => proceso.nombre), 'COLA')
-//   console.log('------------------------------------\n')
-// }
