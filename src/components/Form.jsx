@@ -13,12 +13,12 @@ export default ({ addData, toast }) => {
     }
 
     if (isNaN(tiempoLlegada) || isNaN(rafagaCPU)) {
-      toast.error('Ingresa un número en el tiempo de llegada y la rafaga de CPU')
+      toast.error('Ingresa un número en el tiempo de llegada y la ráfaga de CPU')
       return
     }
 
-    if (tiempoLlegada <= 0 || rafagaCPU <= 0) {
-      toast.error('Ingresa un número positivo en el tiempo de llegada y la rafaga de CPU')
+    if (tiempoLlegada < 0 || rafagaCPU < 0) {
+      toast.error('Ingresa un número mayor o igual a cero en el tiempo de llegada y la ráfaga de CPU')
       return
     }
 
