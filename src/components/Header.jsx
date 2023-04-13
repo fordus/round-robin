@@ -27,15 +27,15 @@ export default function Header ({ setQuantum, isStarted, toast, startProgram, re
       <Title>Simulador de planificación Round-robin.</Title>
       <Text>Ingresa los procesos que deseas ejecutar y presiona el botón iniciar.</Text>
       <aside className='flex flex-col gap-4 py-3 sm:items-end sm:flex-row'>
-        <Card className='flex flex-col gap-4 w-fit'>
-          <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
+        <Card className='flex flex-col gap-4 xl:flex-row w-fit'>
+          <form className='flex flex-col gap-4 xl:flex-row xl:items-center' onSubmit={handleSubmit}>
             <Text>Quantum</Text>
             <TextInput name='quantum' type='number' className='w-11' disabled={isStarted} placeholder='2' defaultValue='2' />
             <Button icon={CogIcon} className='w-40 h-10' disabled={isStarted}>
               Iniciar
             </Button>
           </form>
-          <Button icon={ArrowDownIcon} className='w-40 h-10' variant='secondary' onClick={setExampleData}>
+          <Button icon={ArrowDownIcon} className='w-40 h-10' variant='secondary' onClick={setExampleData} disabled={isStarted}>
             Cargar ejemplo
           </Button>
           <Button icon={RefreshIcon} className='w-40 h-10' variant='secondary' onClick={resetProgram}>

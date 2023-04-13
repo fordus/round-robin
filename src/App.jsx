@@ -28,7 +28,6 @@ function App () {
     setExampleData
   } = useApp({ toast })
 
-  console.log(listaTerminados)
   return (
 
     <main className='relative'>
