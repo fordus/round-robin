@@ -17,8 +17,8 @@ export default ({ addData, toast }) => {
       return
     }
 
-    if (tiempoLlegada < 0 || rafagaCPU < 0) {
-      toast.error('Ingresa un número mayor o igual a cero en el tiempo de llegada y la ráfaga de CPU')
+    if (tiempoLlegada < 0 || rafagaCPU <= 0) {
+      toast.error('Tiempo de llegada o ráfaga de cpu inválido')
       return
     }
 
