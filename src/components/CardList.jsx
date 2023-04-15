@@ -19,15 +19,15 @@ export default ({ listaTerminados, tiempo = 0 }) => {
         </ListItem>
         <ListItem>
           <span>Tiempo de servicio</span>
-          <span>{promedioTiempoServicio}</span>
+          <span>{promedioTiempoServicio.toFixed(2)}</span>
         </ListItem>
         <ListItem>
           <span>Tiempo de espera</span>
-          <span>{promedioTiempoEspera}</span>
+          <span>{promedioTiempoEspera.toFixed(2)}</span>
         </ListItem>
         <ListItem>
           <span>Índice de servicio</span>
-          <span>{promedioIndice}</span>
+          <span>{promedioIndice.toFixed(2)}</span>
         </ListItem>
       </List>
     </Card>
