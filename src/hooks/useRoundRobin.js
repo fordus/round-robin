@@ -9,61 +9,61 @@ export function useRoundRobin ({ listaProcesos: listaProcesosInicio, isStarted }
   const [tiempoActual, setTiempoActual] = useState(0)
   const [listaProcesosInicial, setListaProcesosInicial] = useState([])
 
-  const listaProcesos = listaProcesosInicio.map(proceso => ({ ...proceso, rafagaCPUInicio: proceso.rafagaCPU }))
+  let listaProcesos = listaProcesosInicio.map(proceso => ({ ...proceso, rafagaCPUInicio: proceso.rafagaCPU }))
   let tiempo = 0
-  const completado = []
-  const cola = []
+  let completado = []
+  let cola = []
   let contador = 0
   let procesoActual = null
 
   useEffect(() => {
     if (isStarted) {
       const intervalId = setInterval(() => {
-        listaProcesos.forEach(proceso => {
-          if (proceso.tiempoLlegada === tiempo) {
-            cola.push(proceso)
-            listaProcesos.splice(listaProcesos.indexOf(proceso), 1)
-          }
-        })
+        const newCola = listaProcesos.filter(proceso => proceso.tiempoLlegada === tiempo)
+        const newListaProcesos = listaProcesos.filter(proceso => proceso.tiempoLlegada !== tiempo)
+        cola = [...cola, ...newCola]
+        listaProcesos = newListaProcesos
 
         if (cola.length > 0 && procesoActual === null) {
           procesoActual = cola.shift()
+          setEnProceso(procesoActual)
         }
 
-        setProcesosTerminados(completado)
         setProcesosCola(cola)
-        setEnProceso(procesoActual)
         setTiempoActual(tiempo)
         setListaProcesosInicial(listaProcesos)
 
         if (procesoActual !== null && procesoActual.rafagaCPU !== 0 && contador <= quantum) {
           procesoActual.rafagaCPU--
           if (procesoActual.rafagaCPU === 0) {
-            completado.push({
-              id: procesoActual.id,
-              nombre: procesoActual.nombre,
-              rafagaCPU: procesoActual.rafagaCPUInicio,
-              tiempoLlegada: procesoActual.tiempoLlegada,
-              tiempoFinalizacion: tiempo + 1,
-              tiempoServicio: tiempo + 1 - procesoActual.tiempoLlegada,
-              tiempoEspera: (tiempo + 1 - procesoActual.tiempoLlegada) - procesoActual.rafagaCPUInicio,
-              indice: procesoActual.rafagaCPUInicio / (tiempo + 1 - procesoActual.tiempoLlegada)
-            })
+            completado = [
+              ...completado,
+              {
+                id: procesoActual.id,
+                nombre: procesoActual.nombre,
+                rafagaCPU: procesoActual.rafagaCPUInicio,
+                tiempoLlegada: procesoActual.tiempoLlegada,
+                tiempoFinalizacion: tiempo + 1,
+                tiempoServicio: tiempo + 1 - procesoActual.tiempoLlegada,
+                tiempoEspera: (tiempo + 1 - procesoActual.tiempoLlegada) - procesoActual.rafagaCPUInicio,
+                indice: procesoActual.rafagaCPUInicio / (tiempo + 1 - procesoActual.tiempoLlegada)
+              }]
             contador = 0
             procesoActual = null
+            setProcesosTerminados(completado)
+            setEnProceso(procesoActual)
           } else {
             contador++
             if (contador === quantum) {
-              listaProcesos.forEach(proceso => {
-                if (proceso.tiempoLlegada === (tiempo + 1)) {
-                  cola.push(proceso)
-                  listaProcesos.splice(listaProcesos.indexOf(proceso), 1)
-                }
-              })
+              const newCola = listaProcesos.filter(proceso => proceso.tiempoLlegada === tiempo + 1)
+              const newListaProcesos = listaProcesos.filter(proceso => proceso.tiempoLlegada !== tiempo + 1)
+              cola = [...cola, ...newCola]
+              listaProcesos = newListaProcesos
+              cola = [...cola, procesoActual]
 
-              cola.push(procesoActual)
               contador = 0
               procesoActual = null
+              setEnProceso(procesoActual)
             }
           }
         }
